@@ -1,6 +1,7 @@
 ﻿namespace Umsa.DataAccess.Repositories.Interfaces
 {
-    public class IRepository
+    public interface IRepository<T> where T : class
     {
+        public Task<List<T>> GetAll();
     }
 }

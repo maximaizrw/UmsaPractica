@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Umsa.DataAccess;
+using Umsa.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer("name=DefaultConnection");
 });
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWorkService>();
 
 var app = builder.Build();
 
