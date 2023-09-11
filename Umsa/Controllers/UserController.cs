@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Umsa.Models;
+using Umsa.Services;
 
 namespace Umsa.Controllers
 {
@@ -8,13 +9,18 @@ namespace Umsa.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        public UserController()
+        private readonly IUnitOfWork _unitOfWork;
+        public UserController(IUnitOfWork unitOfWork)
         {
+            _unitOfWork = unitOfWork;
         }
 
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetAll()
         {
-            return Ok();
+            var users = await _unitOfWork.UserRepository.GetAll();
+
+            return users;
         }
     }
 }
