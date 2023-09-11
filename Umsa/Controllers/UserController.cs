@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Umsa.Models;
 using Umsa.Services;
@@ -16,6 +17,7 @@ namespace Umsa.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<User>>> GetAll()
         {
             var users = await _unitOfWork.UserRepository.GetAll();
