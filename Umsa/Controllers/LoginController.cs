@@ -1,57 +1,40 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Umsa.DTOs;
+using Umsa.Helpers;
+using Umsa.Services;
 
 namespace Umsa.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class LoginController : ControllerBase
     {
-        /// <summary>
-        /// Obtiene todos los usuarios
-        /// </summary>
-        /// <param name="todos"> 
-        /// <returns>Todos los usuarios o devuelve un usuario</returns>
-        [HttpGet]
-        [Route("Usuarios")]
-        public IActionResult Usuarios (bool todos)
+        private TokenJwtHelper _tokenJwtHelper;
+        private readonly IUnitOfWork _unitOfWork;
+        public LoginController(IUnitOfWork unitOfWork, IConfiguration configuration )
         {
-            try
-            {
-                if (todos)
-                {
-                    return Ok("Todos los usuarios");
-                }
-                else
-                {
-                    return Ok("Un usuario");
-                }
-            }
-            catch (Exception)
-            {
-
-                return Ok("Contacte a sistemas");
-            }
-            
-
+            _unitOfWork = unitOfWork;
+            _tokenJwtHelper = new TokenJwtHelper(configuration);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="login"></param>
-        /// <returns></returns>
         [HttpPost]
-        public IActionResult Login(LoginDTO login)
+        public async Task<IActionResult> Login(AuthenticateDTO dto)
         {
-            if (login.Usuario == "maxi" && login.Clave == "maxi") {
-            return Ok("Bienvenido");
-                }
-            else
+            var userCredentials = await _unitOfWork.UserRepository.AuthenticateCredentials(dto);
+            if (userCredentials is null) return Unauthorized("Email o clave incorrectas");
+
+            var token = _tokenJwtHelper.GenerateToken(userCredentials);
+
+            var user = new UserLoginDTO()
             {
-                return Unauthorized("Usuario o clave incorrectos");
-            }
+                Email = userCredentials.Email,
+                FirstName = userCredentials.FirstName,
+                LastName = userCredentials.LastName,
+                Token = token
+            };
+
+            return Ok(user);
         }
+        
     }
 }
