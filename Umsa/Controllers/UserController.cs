@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Umsa.DTOs;
 using Umsa.Models;
 using Umsa.Services;
 
@@ -25,7 +26,35 @@ namespace Umsa.Controllers
             return users;
         }
 
-        //Obtener por ID
+        [HttpPost]
+        [Route("Register")]
+        public async Task<IActionResult> Register(RegisterDTO dto)
+        {
+            var user = new User(dto);
+            await _unitOfWork.UserRepository.Insert(user);
+            await _unitOfWork.Complete();
+            return Ok(true);
+        }
+
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update([FromRoute] int id, RegisterDTO dto)
+        {
+            var result = await _unitOfWork.UserRepository.Update(new User(dto, id));
+            await _unitOfWork.Complete();
+            return Ok(true);
+        }
+
+        //Delete
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            var result = await _unitOfWork.UserRepository.Delete(id);
+            await _unitOfWork.Complete();
+            return Ok(true);
+        }
+
+
 
     }
 }
