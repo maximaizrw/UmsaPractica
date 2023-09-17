@@ -16,8 +16,7 @@ namespace Umsa.DataAccess.Repositories
         public async Task<User?> AuthenticateCredentials(AuthenticateDTO dto)
         {
             return await _context.Users.SingleOrDefaultAsync(x => x.Email == dto.Email && x.Clave == dto.Clave);
-        }
-       
-        
+        }       
+     
     }
 }

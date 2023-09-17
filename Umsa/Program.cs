@@ -21,7 +21,7 @@ builder.Services.AddSwaggerGen(c =>
         Type = SecuritySchemeType.Http,
         Scheme = "bearer"
     });
-    
+
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -36,12 +36,7 @@ builder.Services.AddSwaggerGen(c =>
             new string[] { }
         }
     });
-
-
-    });
-
-
-
+});
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {

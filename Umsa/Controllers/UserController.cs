@@ -24,5 +24,8 @@ namespace Umsa.Controllers
 
             return users;
         }
+
+        //Obtener por ID
+
     }
 }
