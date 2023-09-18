@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Umsa.Helpers;
 using Umsa.Models;
 
 namespace Umsa.DataAccess.DatabaseSeeding
@@ -14,9 +15,10 @@ namespace Umsa.DataAccess.DatabaseSeeding
                     FirstName = "Maxi",
                     LastName = "Maiz",
                     Email = "maxi@gmail.com",
-                    Clave = "1234",
+                    Clave = PasswordEncryptHelper.EncryptPassword("1234"),
+                    RoleId = 1
                 }
-                );
+                ); ;
         }
     }
 }

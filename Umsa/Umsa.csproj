@@ -25,6 +25,7 @@
   <ItemGroup>
     <Folder Include="Infraestructure\" />
     <Folder Include="Logic\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Umsa.DTOs;
+using Umsa.Helpers;
 
 namespace Umsa.Models
 {
@@ -12,7 +13,8 @@ namespace Umsa.Models
             FirstName = dto.FirstName;
             LastName = dto.LastName;
             Email = dto.Email;
-            Clave = dto.Clave;
+            RoleId = 2;
+            Clave = PasswordEncryptHelper.EncryptPassword(dto.Clave);
         }
 
         public User(RegisterDTO dto, int id)
@@ -21,7 +23,8 @@ namespace Umsa.Models
             FirstName = dto.FirstName;
             LastName = dto.LastName;
             Email = dto.Email;
-            Clave = dto.Clave;
+            RoleId = dto.RoleId;
+            Clave = PasswordEncryptHelper.EncryptPassword(dto.Clave);
         }
 
         public User()
@@ -40,7 +43,11 @@ namespace Umsa.Models
         [Column("user_email", TypeName = "VARCHAR(100)")]
         public string Email { get; set; }
         [Required]
-        [Column("user_clave", TypeName = "VARCHAR(50)")]
+        [Column("user_clave", TypeName = "VARCHAR(250)")]
         public string Clave { get; set; }
+        [Required]
+        [Column("role_id")]
+        public int RoleId { get; set; }
+        public Role? Role { get; set; }
     }
 }
