@@ -21,7 +21,7 @@ namespace Umsa.Controllers
         public async Task<IActionResult> Login(AuthenticateDTO dto)
         {
             var userCredentials = await _unitOfWork.UserRepository.AuthenticateCredentials(dto);
-            if (userCredentials is null) return Unauthorized("Email o clave incorrectas");
+            if (userCredentials is null) return Unauthorized("Credenciales incorrectas");
 
             var token = _tokenJwtHelper.GenerateToken(userCredentials);
 
