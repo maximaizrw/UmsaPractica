@@ -15,7 +15,7 @@ namespace Umsa.DataAccess.DatabaseSeeding
                     FirstName = "Maxi",
                     LastName = "Maiz",
                     Email = "maxi@gmail.com",
-                    Clave = PasswordEncryptHelper.EncryptPassword("1234"),
+                    Password = PasswordEncryptHelper.EncryptPassword("1234" , "maxi@gmail.com"),
                     RoleId = 1
                 }
                 ); ;
