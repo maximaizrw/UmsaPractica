@@ -14,7 +14,7 @@ namespace Umsa.Models
             LastName = dto.LastName;
             Email = dto.Email;
             RoleId = 2;
-            Clave = PasswordEncryptHelper.EncryptPassword(dto.Clave);
+            Password = PasswordEncryptHelper.EncryptPassword(dto.Password, dto.Email);
         }
 
         public User(RegisterDTO dto, int id)
@@ -24,7 +24,7 @@ namespace Umsa.Models
             LastName = dto.LastName;
             Email = dto.Email;
             RoleId = dto.RoleId;
-            Clave = PasswordEncryptHelper.EncryptPassword(dto.Clave);
+            Password = PasswordEncryptHelper.EncryptPassword(dto.Password, dto.Email);
         }
 
         public User()
@@ -44,7 +44,7 @@ namespace Umsa.Models
         public string Email { get; set; }
         [Required]
         [Column("user_clave", TypeName = "VARCHAR(250)")]
-        public string Clave { get; set; }
+        public string Password { get; set; }
         [Required]
         [Column("role_id")]
         public int RoleId { get; set; }

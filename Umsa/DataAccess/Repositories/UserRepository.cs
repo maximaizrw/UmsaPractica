@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Umsa.DataAccess.Repositories.Interfaces;
 using Umsa.DTOs;
 using Umsa.Helpers;
 using Umsa.Models;
+using Umsa.Services;
 
 namespace Umsa.DataAccess.Repositories
 {
@@ -24,7 +26,7 @@ namespace Umsa.DataAccess.Repositories
             user.FirstName = updateUser.FirstName;
             user.LastName = updateUser.LastName;
             user.Email = updateUser.Email;
-            user.Clave = updateUser.Clave;
+            user.Password = updateUser.Password;
 
             _context.Users.Update(user);
             return true;
@@ -43,7 +45,12 @@ namespace Umsa.DataAccess.Repositories
 
         public async Task<User?> AuthenticateCredentials(AuthenticateDTO dto)
         {
-            return await _context.Users.SingleOrDefaultAsync(x => x.Email == dto.Email && x.Clave == PasswordEncryptHelper.EncryptPassword(dto.Clave));
+            return await _context.Users.Include(x=> x.Role).SingleOrDefaultAsync(x => x.Email == dto.Email && x.Password == PasswordEncryptHelper.EncryptPassword(dto.Password, dto.Email));
+        }
+
+        public async Task<bool> UserExist(string email)
+        {
+            return await _context.Users.AnyAsync(x => x.Email == email);
         }
 
     }
